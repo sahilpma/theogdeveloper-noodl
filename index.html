@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noodl — The task app that doesn't punish you</title>
+  <meta name="description" content="Noodl is a task and focus app designed for ADHD brains. No streaks. No dead trees. No guilt. Just you, your tasks, and a timer that doesn't judge." />
+  <meta property="og:title" content="Noodl — The task app that doesn't punish you" />
+  <meta property="og:description" content="No streaks. No dead trees. No guilt. A task app built for the way your brain actually works." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #6BA4D9;
+      --blue-wash:   #E8F4FD;
+      --teal:        #4DB6AC;
+      --teal-wash:   #E0F2F1;
+      --amber:       #FFB74D;
+      --amber-wash:  #FFF8E1;
+      --sand:        #F5F0EB;
+      --pebble:      #D7CCC8;
+      --slate:       #2E3A45;
+      --off-white:   #FAFAF8;
+      --radius-lg:   20px;
+      --radius-md:   12px;
+      --radius-sm:   8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: var(--off-white);
+      color: var(--slate);
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 250, 248, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--pebble);
+      padding: 0 24px;
+    }
+    .nav-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--slate);
+      text-decoration: none;
+      font-size: 0.92rem;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--blue);
+      color: white;
+      text-decoration: none;
+      padding: 9px 20px;
+      border-radius: 100px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Lexend', sans-serif;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(107,164,217,0.35);
+    }
+
+    /* ── HERO ────────────────────────────────────── */
+    .hero {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 72px 24px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero-text h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+    }
+    .hero-text h1 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      opacity: 0.72;
+      max-width: 420px;
+      margin-bottom: 32px;
+      line-height: 1.65;
+    }
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-play {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--slate);
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: 'Lexend', sans-serif;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-play:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(46,58,69,0.25);
+    }
+    .btn-play svg { flex-shrink: 0; }
+    .hero-note {
+      font-size: 0.82rem;
+      opacity: 0.5;
+      align-self: center;
+    }
+
+    /* Pip character */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .pip-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+    }
+    .pip-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--blue-wash);
+      border-radius: 50%;
+      animation: float 5s ease-in-out infinite;
+    }
+    .pip-svg {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: float 5s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pip-bg, .pip-svg { animation: none; }
+    }
+
+    /* ── BADGES STRIP ────────────────────────────── */
+    .badges {
+      background: var(--sand);
+      border-top: 1px solid var(--pebble);
+      border-bottom: 1px solid var(--pebble);
+      padding: 20px 24px;
+    }
+    .badges-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .badge-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      opacity: 0.72;
+    }
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── FEATURES ────────────────────────────────── */
+    .section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 72px 24px;
+    }
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 48px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      background: white;
+      border: 1px solid var(--pebble);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(46,58,69,0.08);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 1.5rem;
+    }
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      opacity: 0.68;
+      line-height: 1.6;
+    }
+
+    /* ── PHILOSOPHY ──────────────────────────────── */
+    .philosophy {
+      background: var(--slate);
+      padding: 80px 24px;
+      color: white;
+    }
+    .philosophy-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .philosophy-inner .section-label {
+      color: var(--amber);
+      opacity: 1;
+      margin-bottom: 16px;
+    }
+    .philosophy-inner h2 {
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 24px;
+      line-height: 1.25;
+    }
+    .philosophy-inner p {
+      font-size: 1rem;
+      opacity: 0.72;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .copy-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 40px;
+      text-align: left;
+    }
+    .copy-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 20px 22px;
+    }
+    .copy-card .label {
+      font-size: 0.75rem;
+      opacity: 0.45;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .copy-card q {
+      font-size: 0.95rem;
+      line-height: 1.5;
+      quotes: "\201C" "\201D";
+    }
+    .copy-card q::before { content: open-quote; }
+    .copy-card q::after  { content: close-quote; }
+
+    /* ── HOW IT WORKS ────────────────────────────── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--blue-wash);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .step h3 { font-size: 1rem; font-weight: 600; }
+    .step p  { font-size: 0.9rem; opacity: 0.65; line-height: 1.6; }
+
+    /* ── CTA BANNER ──────────────────────────────── */
+    .cta-banner {
+      background: var(--blue-wash);
+      border-top: 1px solid rgba(107,164,217,0.25);
+      border-bottom: 1px solid rgba(107,164,217,0.25);
+      padding: 64px 24px;
+      text-align: center;
+    }
+    .cta-banner h2 {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .cta-banner p {
+      opacity: 0.65;
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--off-white);
+      border-top: 1px solid var(--pebble);
+      padding: 36px 24px;
+    }
+    .footer-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--blue);
+    }
+    .footer-brand span {
+      font-weight: 400;
+      font-size: 0.82rem;
+      color: var(--slate);
+      opacity: 0.5;
+      margin-left: 8px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      color: var(--slate);
+      text-decoration: none;
+      font-size: 0.85rem;
+      opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .footer-links a:hover { opacity: 1; }
+
+    /* ── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 48px;
+        text-align: center;
+      }
+      .hero-text p { max-width: 100%; }
+      .hero-cta { justify-content: center; }
+      .hero-visual { order: -1; }
+      .pip-container { width: 200px; height: 200px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps-grid    { grid-template-columns: 1fr; }
+      .copy-cards    { grid-template-columns: 1fr; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+    @media (max-width: 540px) {
+      .hero-cta { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ───────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">noodl</a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="privacy/">Privacy</a></li>
+      <li><a href="terms/">Terms</a></li>
+      <li><a href="#get-app" class="btn-pill">Get the app</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────── -->
+<main>
+<section class="hero">
+  <div class="hero-text">
+    <p class="section-label">For ADHD brains &amp; everyone in between</p>
+    <h1>The task app that doesn't <em>punish</em> you for being human.</h1>
+    <p>No streaks to break. No dead trees. No guilt trips. Just capture what's in your head, stay focused for a bit, and let tomorrow be tomorrow.</p>
+    <div class="hero-cta">
+      <a href="#get-app" class="btn-play" id="get-app">
+        <!-- Google Play icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3.18 23.72a2 2 0 0 1-1.18-1.8V2.08a2 2 0 0 1 1.18-1.8l11.6 11.72L3.18 23.72Z" fill="#EA4335"/>
+          <path d="M20.09 14.54 16.6 12l-1.82 1.8 1.82 1.84 3.49-1.1Z" fill="#FBBC04"/>
+          <path d="M3.18.28 14.78 12 16.6 10.2 3.18.28Z" fill="#4285F4"/>
+          <path d="M3.18 23.72 16.6 13.8l-1.82-1.8L3.18 23.72Z" fill="#34A853"/>
+        </svg>
+        Coming to Google Play
+      </a>
+      <span class="hero-note">Android · Free · No account needed</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="pip-container">
+      <div class="pip-bg"></div>
+      <div class="pip-svg">
+        <!-- Mochi pip character -->
+        <svg viewBox="0 0 200 200" width="200" height="200" aria-label="Mochi, the Noodl companion character" role="img">
+          <ellipse cx="100" cy="115" rx="65" ry="60" fill="#6BA4D9"/>
+          <ellipse cx="85" cy="95" rx="30" ry="22" fill="#E8F4FD" opacity="0.35"/>
+          <ellipse cx="80" cy="105" rx="11" ry="13" fill="white"/>
+          <ellipse cx="82" cy="107" rx="6.5" ry="8" fill="#2E3A45"/>
+          <circle cx="85" cy="103" r="2.5" fill="white"/>
+          <ellipse cx="118" cy="102" rx="9" ry="11" fill="white"/>
+          <ellipse cx="120" cy="104" rx="5.5" ry="7" fill="#2E3A45"/>
+          <circle cx="123" cy="100" r="2" fill="white"/>
+          <path d="M 92 122 Q 100 130 108 122" stroke="#2E3A45" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <ellipse cx="80" cy="172" rx="14" ry="8" fill="#6BA4D9"/>
+          <ellipse cx="120" cy="172" rx="14" ry="8" fill="#6BA4D9"/>
+          <circle cx="68" cy="120" r="8" fill="#F48FB1" opacity="0.3"/>
+          <circle cx="132" cy="118" r="7" fill="#F48FB1" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BADGES STRIP ───────────────────────────────── -->
+<div class="badges">
+  <div class="badges-inner">
+    <div class="badge-item">
+      <span class="badge-dot" style="background:#6BA4D9"></span>
+      100% local — your data never leaves your phone
+    </div>
+    <div class="badge-item">
+      <span class="badge-dot" style="background:#4DB6AC"></span>
+      No account required
+    </div>
+    <div class="badge-item">
+      <span class="badge-dot" style="background:#FFB74D"></span>
+      Zero streaks, zero guilt
+    </div>
+    <div class="badge-item">
+      <span class="badge-dot" style="background:#6BA4D9"></span>
+      Completely free
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ───────────────────────────────────── -->
+<section class="section" id="features">
+  <p class="section-label">What's in the box</p>
+  <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#E8F4FD">✏️</div>
+      <h3>Frictionless capture</h3>
+      <p>One tap to add a task. No categories, no priorities, no setup. Just get it out of your head.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#E0F2F1">⏱</div>
+      <h3>Focus timer</h3>
+      <p>A simple countdown timer with a jot button. Capture thoughts mid-session without losing your place.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#FFF8E1">🔄</div>
+      <h3>Auto-reschedule</h3>
+      <p>Unfinished tasks quietly move to your Revisit bucket overnight — no "OVERDUE" badge, no shame.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#E8F4FD">📈</div>
+      <h3>Focused minutes</h3>
+      <p>One number that only ever goes up: your total focused minutes. A metric you can feel good about.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#E0F2F1">🌙</div>
+      <h3>Dark mode</h3>
+      <p>Follows your system setting. A sensory-safe palette with muted tones and no harsh contrasts.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#FFF8E1">🔔</div>
+      <h3>Daily reminder</h3>
+      <p>One gentle nudge at a time you choose. Local notification — never a push, never a blast.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── PHILOSOPHY ─────────────────────────────────── -->
+<section class="philosophy">
+  <div class="philosophy-inner">
+    <p class="section-label">Built differently, on purpose</p>
+    <h2>We're not that app.</h2>
+    <p>Most productivity apps are designed around consistency — streaks, points, badges. For a lot of people that's motivating. For ADHD brains, it often becomes another system to fail at.</p>
+    <p>Noodl is designed around <strong>recovery</strong>, not consistency. Miss a day? Your app looks exactly the same as yesterday. No guilt. No fire. Just your tasks, still there, whenever you're ready.</p>
+
+    <div class="copy-cards">
+      <div class="copy-card">
+        <p class="label">When you miss a day</p>
+        <q>Still here when you're ready.</q>
+      </div>
+      <div class="copy-card">
+        <p class="label">When you finish a task</p>
+        <q>One less thing living in your head.</q>
+      </div>
+      <div class="copy-card">
+        <p class="label">On the empty state</p>
+        <q>Nothing here yet — which honestly sounds peaceful.</q>
+      </div>
+      <div class="copy-card">
+        <p class="label">On streaks</p>
+        <q>Noodl doesn't kill your tree when you have a bad day. We're not that app.</q>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────── -->
+<section class="section" id="how-it-works">
+  <p class="section-label">How it works</p>
+  <h2 class="section-title">Three things. That's it.</h2>
+  <div class="steps-grid">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Capture</h3>
+      <p>Tap the button, type what's in your head, done. No fields to fill, no project to assign.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Focus</h3>
+      <p>Pick a task (or skip that part), start the timer, and work. Jot thoughts without breaking flow.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Rest</h3>
+      <p>Close the app. Tomorrow, unfinished tasks move to Revisit — quietly, without drama.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA BANNER ─────────────────────────────────── -->
+<section class="cta-banner">
+  <h2>Ready to try a kinder task app?</h2>
+  <p>Free, no account, no setup. Works immediately.</p>
+  <a href="#get-app" class="btn-play" style="display:inline-flex">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M3.18 23.72a2 2 0 0 1-1.18-1.8V2.08a2 2 0 0 1 1.18-1.8l11.6 11.72L3.18 23.72Z" fill="#EA4335"/>
+      <path d="M20.09 14.54 16.6 12l-1.82 1.8 1.82 1.84 3.49-1.1Z" fill="#FBBC04"/>
+      <path d="M3.18.28 14.78 12 16.6 10.2 3.18.28Z" fill="#4285F4"/>
+      <path d="M3.18 23.72 16.6 13.8l-1.82-1.8L3.18 23.72Z" fill="#34A853"/>
+    </svg>
+    Coming to Google Play
+  </a>
+</section>
+
+</main>
+
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <span class="footer-brand">noodl <span>by The OG Developer</span></span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="privacy/">Privacy Policy</a></li>
+      <li><a href="terms/">Terms</a></li>
+      <li><a href="mailto:sahilpm2602@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
