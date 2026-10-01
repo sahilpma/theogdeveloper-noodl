@@ -1,6 +1,6 @@
 # Terms and Conditions for Noodl
 
-**Last updated:** April 13, 2026
+**Last updated:** September 26, 2026
 
 **Developer:** The OG Developer  
 **Contact:** sahilpm2602@gmail.com
@@ -19,13 +19,15 @@ The App is developed and provided by The OG Developer ("we," "us," or "our"). We
 
 Noodl is a task management and focus timer application for Android devices. The App provides:
 
-- Task creation, organization, and completion
+- Task capture, organization, and completion: Home shows today's tasks, and Plan holds
+  scheduled tasks and parked ones (tasks with no date, including anything unfinished from an
+  earlier day, which moves there overnight)
 - Focus timer sessions with configurable durations
 - Jotted thought notes during focus sessions
 - Cumulative focus time tracking
-- Local data export (CSV)
+- Local data export (CSV of tasks, thoughts and focus sessions)
 - Daily reminder notifications (optional)
-- Task rescheduling and revisit features
+- A home-screen widget and Quick Settings tiles
 
 The App is designed as a productivity tool. **It is not a medical device, diagnostic tool, or treatment for ADHD or any other condition.**
 
@@ -47,10 +49,11 @@ You may not:
 
 ## 4. No User Accounts
 
-Noodl does **not** provide user accounts, cloud synchronization, or multi-device support. All of your data is stored locally on your device. This means:
+Noodl does **not** provide user accounts, cloud synchronization, or multi-device support. Your data is stored on your device. This means:
 
-- **You are responsible for backing up your data.** We recommend using the CSV export feature regularly (Settings > Data & Privacy > Export Tasks (CSV)).
-- **If you lose your device, uninstall the app, or clear app data, your data will be permanently lost.** We cannot recover it.
+- **Android backup is how your data moves to a new phone.** Noodl lets Android back up its data to your own Google account (end-to-end encrypted with your screen lock) and copy it during device-to-device transfer. Whether that happens depends on your phone's backup settings, which you control. We have no copy.
+- **The CSV export (Settings > Data & Privacy > Export) is a readable copy for you to keep.** Noodl cannot import it back.
+- **If you lose your device, uninstall the app, or clear app data, and there is no Android backup, your data is permanently lost.** We cannot recover it.
 - **There is no account recovery process.** We have no access to your tasks, notes, focus sessions, or preferences.
 
 ---
@@ -82,18 +85,18 @@ Some jurisdictions do not allow the exclusion or limitation of liability, so the
 
 ## 7. Data and Privacy
 
-Your use of the App is also governed by our [Privacy Policy](https://theogdeveloper.github.io/noodl/privacy). By using the App, you consent to the data practices described in the Privacy Policy, including:
+Your use of the App is also governed by our [Privacy Policy](https://sahilpma.github.io/theogdeveloper-noodl/privacy). By using the App, you consent to the data practices described in the Privacy Policy, including:
 
-- Local storage of all your personal content (tasks, notes, focus sessions)
-- Automatic crash reporting via Firebase Crashlytics in release builds
-- Opt-in anonymous analytics via Firebase Analytics
+- Storage of your personal content (tasks, notes, focus sessions) on your device, and in your own encrypted Android backup if your phone's backup is on
+- Automatic crash reporting via Firebase Crashlytics, which is always on
+- Usage analytics via Firebase Analytics, only if you turn them on
 - Voluntary submission of feedback and bug reports to our AWS-hosted backend
 
 You acknowledge that:
 
 - We do not have access to your task content, notes, or jotted thoughts
 - We cannot recover your data if you lose your device or uninstall the app
-- You are responsible for maintaining backups of your important data
+- Keeping a backup (Android backup or your own export) is your choice and responsibility
 
 ---
 
@@ -111,13 +114,13 @@ If you submit feedback, bug reports, or suggestions to us:
 
 The App integrates with or references the following third-party services:
 
-- **Firebase (Google)** — Crash reporting and optional analytics
+- **Firebase (Google)** — Crash reporting (always on) and analytics (only if you turn them on)
 - **Amazon Web Services (AWS)** — Backend for feedback/bug report submissions
 - **Open Source Libraries** — Including OkHttp, Timber, Kotlin Coroutines, Room, Hilt, Jetpack Compose, and others
 
 These services are governed by their respective terms and privacy policies. We are not responsible for the practices of these third-party services.
 
-A list of open source libraries used in the App is available in-app via **Settings > About & Licenses**.
+A list of the open source libraries used in the App, with their licences, is available in-app via **Settings > Open-source licences**.
 
 ---
 
@@ -153,7 +156,9 @@ Upon termination, your right to use the App will immediately cease. Sections 4, 
 
 ## 14. Governing Law
 
-These Terms shall be governed by and construed in accordance with the laws applicable to the jurisdiction of The OG Developer. Any disputes arising out of or relating to these Terms shall be resolved in the courts of that jurisdiction.
+These Terms are governed by the laws of India. Any disputes arising out of or relating to these Terms or the App will be resolved by the courts of India.
+
+If you use the App as a consumer, nothing in these Terms takes away the protection you have under the mandatory consumer laws of the country where you live.
 
 ---
 
